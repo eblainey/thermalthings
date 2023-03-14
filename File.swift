@@ -2,27 +2,34 @@
 //  File.swift
 //  therm
 //
-//
-
 import Foundation
 
-
-let IP_ADDRESS = "192.168.0.120"
-let PORT: UInt16 = 30444
-
-let server = Server(port: port)
-server.start()
-
-
-RunLoop.current.run()
-
-} else {
-  let stderr = FileHandle.standardError
-  let message = "Requires macOS 10.14 or newer"
-  stderr.write(message.data(using: .utf8)!)
-  exit(EXIT_FAILURE)
+class mainrun{
+    let IP_ADDRESS :String
+    let PORT: UInt16
+    let server : Server
+    
+    init() {
+        self.IP_ADDRESS = "192.168.0.120"
+        self.PORT =  30444
+        self.server = Server(port: self.PORT)
+        
+        do {
+            try server.start()
+        } catch {
+            let stderr = FileHandle.standardError
+            let message = "Failed to start server: \(error.localizedDescription)\n"
+            stderr.write(message.data(using: .utf8)!)
+            exit(EXIT_FAILURE)
+        }
+        
+        RunLoop.current.run()
+    }
 }
 
+let app = mainrun()
+
+    
 
 //
 //import NIO
